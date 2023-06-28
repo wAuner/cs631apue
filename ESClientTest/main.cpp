@@ -130,6 +130,13 @@ int main(int argc, char* argv[])
         return 1;
     }
     
+    int arr[] {1,2,3,4};
+    
+    arr[5] = 7;
+    
+    std::unique_ptr<int> ptr {new int(20)};
+    
+    ptr.get()[2] = 5;
     //   // set up signal handling
     //   dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     //   dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_SIGNAL, SIGINFO, 0, queue);
