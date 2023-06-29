@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		11859B00266F998A00FFA942 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11859AFF266F998A00FFA942 /* main.cpp */; };
 		11859B03266F99C500FFA942 /* libEndpointSecurity.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 11859B02266F99B900FFA942 /* libEndpointSecurity.tbd */; };
+		1199A4FD2A4D5E320032925A /* Endpoint_Security_Tests.provisionprofile in Resources */ = {isa = PBXBuildFile; fileRef = 1199A4FC2A4D5E320032925A /* Endpoint_Security_Tests.provisionprofile */; };
 		11E096AE27EC98A600654C4F /* libbsm.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E096AD27EC98A600654C4F /* libbsm.tbd */; };
 /* End PBXBuildFile section */
 
@@ -19,6 +20,7 @@
 		11859AFB266F94D400FFA942 /* ESClientTest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ESClientTest.entitlements; sourceTree = "<group>"; };
 		11859AFF266F998A00FFA942 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		11859B02266F99B900FFA942 /* libEndpointSecurity.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libEndpointSecurity.tbd; path = usr/lib/libEndpointSecurity.tbd; sourceTree = SDKROOT; };
+		1199A4FC2A4D5E320032925A /* Endpoint_Security_Tests.provisionprofile */ = {isa = PBXFileReference; lastKnownFileType = file; path = Endpoint_Security_Tests.provisionprofile; sourceTree = "<group>"; };
 		11E096AD27EC98A600654C4F /* libbsm.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbsm.tbd; path = usr/lib/libbsm.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -55,6 +57,7 @@
 		11859AF0266F94D300FFA942 /* ESClientTest */ = {
 			isa = PBXGroup;
 			children = (
+				1199A4FC2A4D5E320032925A /* Endpoint_Security_Tests.provisionprofile */,
 				11859AFA266F94D400FFA942 /* Info.plist */,
 				11859AFB266F94D400FFA942 /* ESClientTest.entitlements */,
 				11859AFF266F998A00FFA942 /* main.cpp */,
@@ -130,6 +133,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1199A4FD2A4D5E320032925A /* Endpoint_Security_Tests.provisionprofile in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
