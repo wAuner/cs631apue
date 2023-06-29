@@ -33,6 +33,15 @@ steps:
 #   inputs:
 #     provisioningProfileLocation: 'secureFiles'
 #     provProfileSecureFile: 'Endpoint_Security_Tests.provisionprofile'
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'vastlimits'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    projectKey: 'vastlimits_ESClientTestRepo'
+    projectName: 'ESClientTest'
+
 - bash: |
     set -x
     set -e
