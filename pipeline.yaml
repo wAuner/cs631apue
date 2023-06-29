@@ -19,6 +19,7 @@ steps:
 - checkout: self
 - bash: |
     set -x
+    set -e
     pwd
     brew install sonar-scanner
     xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build #| xcpretty -r json-compilation-database -o compile_commands.json
