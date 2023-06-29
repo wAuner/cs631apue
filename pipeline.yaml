@@ -27,7 +27,7 @@ steps:
     sudo xcode-select -s /Applications/Xcode_14.3.app
     pwd
     brew install sonar-scanner
-    xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build | xcpretty -r json-compilation-database -o compile_commands.json
+    xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build #| xcpretty -r json-compilation-database -o compile_commands.json
     ls
     export SONAR_TOKEN=$SONAR_TOKEN
     sonar-scanner \
