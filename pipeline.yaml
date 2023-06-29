@@ -24,7 +24,9 @@ steps:
   ls
   export SONAR_TOKEN=$SONAR_TOKEN
   sonar-scanner \
-  -Dsonar.organization=vastlimits \
-  -Dsonar.projectKey=vastlimits_ESClientTestRepo \
-  -Dsonar.sources=./ESClientTest \
-  -Dsonar.host.url=https://sonarcloud.io
+    -Dsonar.organization=vastlimits \
+    -Dsonar.projectKey=vastlimits_ESClientTestRepo \
+    -Dsonar.sources=./ESClientTest \
+    -Dsonar.host.url=https://sonarcloud.io
+  env:
+    SONAR_TOKEN: $(SONAR_TOKEN)
