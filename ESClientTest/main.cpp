@@ -24,8 +24,6 @@
 #include <bsm/libbsm.h>
 #include <libproc.h>
 
-//dispatch_queue_t testQueue = dispatch_queue_create("test", DISPATCH_QUEUE_SERIAL);
-
 std::unordered_map<pid_t, timeval> forkStartTimes {};
 
 bool operator== (const timeval& lhs, const timeval& rhs) {
@@ -59,27 +57,6 @@ void handle_event(es_client_t* client, const es_message_t* msg)
             }
             
             assert(msg->event.exec.target->start_time == msg->process->start_time);
-//            proc_taskallinfo info {};
-//
-//            auto size = proc_pidinfo(pid, PROC_PIDTASKALLINFO, 0, &info, PROC_PIDTASKALLINFO_SIZE);
-//
-//            if (size == 0) {
-//                std::cerr << "proc pidinfo failed\n";
-//                return;
-//            }
-//
-//            proc_bsdinfo bsdInfo = info.pbsd;
-//
-//            uint64_t bsdSecs = bsdInfo.pbi_start_tvsec;
-//            uint64_t bsdUSecs = bsdInfo.pbi_start_tvusec;
-//
-//            assert((int64_t)bsdSecs == execStartTime.tv_sec);
-//            assert((int64_t)bsdUSecs == execStartTime.tv_usec);
-//
-//            std::cout << "Start point matches exactly for pid " << pid << std::endl;
-            
-//            std::chrono::seconds seconds(bsdSecs);
-//            std::chrono::microseconds useconds(bsdUSecs);
             
             break;
         }
@@ -97,12 +74,6 @@ void handle_event(es_client_t* client, const es_message_t* msg)
     }
 }
 
-
-//void sigHandler()
-//{
-//   std::scoped_lock lock{pidMutex};
-//   std::cout << "Size of pidversions: " << pidversions.size() << "\n";
-//}
 
 int main(int argc, char* argv[])
 {
@@ -137,20 +108,7 @@ int main(int argc, char* argv[])
     std::unique_ptr<int> ptr {new int(20)};
     
     ptr.get()[2] = 5;
-    //   // set up signal handling
-    //   dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    //   dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_SIGNAL, SIGINFO, 0, queue);
-    //
-    //   if (source)
-    //   {
-    //      dispatch_source_set_event_handler(source, ^{
-    //         sigHandler();
-    //      });
-    //   }
-    //   // dispatch signal handling
-    //   dispatch_resume(source);
-    
-    // dispatch es client
+
     dispatch_main();
     
     
