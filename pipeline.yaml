@@ -17,13 +17,17 @@ resources:
 
 steps:
 - checkout: self
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+    provisioningProfileLocation: 'secureFiles'
+    provProfileSecureFile: 'Endpoint_Security_Tests.provisionprofile'
 - bash: |
     set -x
     set -e
     sudo xcode-select -s /Applications/Xcode_14.3.app
     pwd
     brew install sonar-scanner
-    xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build #| xcpretty -r json-compilation-database -o compile_commands.json
+    xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build | xcpretty -r json-compilation-database -o compile_commands.json
     ls
     export SONAR_TOKEN=$SONAR_TOKEN
     sonar-scanner \
