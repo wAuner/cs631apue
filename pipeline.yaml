@@ -1,0 +1,30 @@
+# Only for PRs
+trigger: none
+
+pool:
+  vmImage: 'macos-13'
+
+resources:
+  repositories:
+  - repository: self
+    checkoutOptions:
+      fetchDepth: 2 # this checks out the merge commit and the one before (to compare which files have changed)
+      submodules: true
+
+# activate these lines if you need to debug the pipeline
+# variables:
+#   System.Debug: true
+
+steps:
+- checkout: self
+- bash: |
+  pwd
+  brew install sonar-scanner
+  xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build | xcpretty -r json-compilation-database -o compile_commands.json
+  ls
+  export SONAR_TOKEN=$SONAR_TOKEN
+  sonar-scanner \
+  -Dsonar.organization=vastlimits \
+  -Dsonar.projectKey=vastlimits_ESClientTestRepo \
+  -Dsonar.sources=./ESClientTest \
+  -Dsonar.host.url=https://sonarcloud.io
