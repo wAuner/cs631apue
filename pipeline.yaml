@@ -18,15 +18,15 @@ resources:
 steps:
 - checkout: self
 - bash: |
-  pwd
-  brew install sonar-scanner
-  xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build | xcpretty -r json-compilation-database -o compile_commands.json
-  ls
-  export SONAR_TOKEN=$SONAR_TOKEN
-  sonar-scanner \
-    -Dsonar.organization=vastlimits \
-    -Dsonar.projectKey=vastlimits_ESClientTestRepo \
-    -Dsonar.sources=./ESClientTest \
-    -Dsonar.host.url=https://sonarcloud.io
+    pwd
+    brew install sonar-scanner
+    xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build | xcpretty -r json-compilation-database -o compile_commands.json
+    ls
+    export SONAR_TOKEN=$SONAR_TOKEN
+    sonar-scanner \
+      -Dsonar.organization=vastlimits \
+      -Dsonar.projectKey=vastlimits_ESClientTestRepo \
+      -Dsonar.sources=./ESClientTest \
+      -Dsonar.host.url=https://sonarcloud.io
   env:
     SONAR_TOKEN: $(SONAR_TOKEN)
