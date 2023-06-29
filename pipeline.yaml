@@ -17,35 +17,35 @@ resources:
 
 steps:
 - checkout: self
-- task: Xcode@5
-  displayName: "build"
-  inputs:
-    xcodeVersion: 'specifyPath'
-    xcodeDeveloperDir: '/Applications/Xcode_14.3.app'
-    actions: 'build' 
-    scheme: 'ESClientTest' # The uberAgent_Tests_CI scheme comprises the test suites of all subprojects/libraries with few exceptions that (sometimes) trip up Azure DevOps build pipelines
-    sdk: 'macosx'
-    configuration: 'Debug'
-    xcWorkspacePath: 'ESClientTest.xcodeproj'
-    useXcpretty: false
+# - task: Xcode@5
+#   displayName: "build"
+#   inputs:
+#     xcodeVersion: 'specifyPath'
+#     xcodeDeveloperDir: '/Applications/Xcode_14.3.app'
+#     actions: 'build' 
+#     scheme: 'ESClientTest' # The uberAgent_Tests_CI scheme comprises the test suites of all subprojects/libraries with few exceptions that (sometimes) trip up Azure DevOps build pipelines
+#     sdk: 'macosx'
+#     configuration: 'Debug'
+#     xcWorkspacePath: 'ESClientTest.xcodeproj'
+#     useXcpretty: false
 # - task: Bash@3
 # - task: InstallAppleProvisioningProfile@1
 #   inputs:
 #     provisioningProfileLocation: 'secureFiles'
 #     provProfileSecureFile: 'Endpoint_Security_Tests.provisionprofile'
-# - bash: |
-#     set -x
-#     set -e
-#     sudo xcode-select -s /Applications/Xcode_14.3.app
-#     pwd
-#     brew install sonar-scanner
-#     xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build #| xcpretty -r json-compilation-database -o compile_commands.json
-#     ls
-#     export SONAR_TOKEN=$SONAR_TOKEN
-#     sonar-scanner \
-#       -Dsonar.organization=vastlimits \
-#       -Dsonar.projectKey=vastlimits_ESClientTestRepo \
-#       -Dsonar.sources=./ESClientTest \
-#       -Dsonar.host.url=https://sonarcloud.io
-#   env:
+- bash: |
+    set -x
+    set -e
+    sudo xcode-select -s /Applications/Xcode_14.3.app
+    pwd
+    brew install sonar-scanner
+    xcodebuild -project ESClientTest.xcodeproj -scheme ESClientTest clean build CODE_SIGNING_ALLOWED=NO #| xcpretty -r json-compilation-database -o compile_commands.json
+    ls
+    export SONAR_TOKEN=$SONAR_TOKEN
+    sonar-scanner \
+      -Dsonar.organization=vastlimits \
+      -Dsonar.projectKey=vastlimits_ESClientTestRepo \
+      -Dsonar.sources=./ESClientTest \
+      -Dsonar.host.url=https://sonarcloud.io
+  env:
     SONAR_TOKEN: $(SONAR_TOKEN)
