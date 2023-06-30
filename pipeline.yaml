@@ -1,5 +1,6 @@
 # Only for PRs
 
+
 trigger: none
 
 pool:
@@ -56,3 +57,7 @@ steps:
       -Dsonar.host.url=https://sonarcloud.io
   env:
     SONAR_TOKEN: $(SONAR_TOKEN)
+  
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
