@@ -20,15 +20,23 @@
 #include <locale>
 #include <mutex>
 #include <unordered_set>
+#include <thread>
+//#include <syncstream>
 
 #include <bsm/libbsm.h>
 #include <libproc.h>
 
-std::unordered_map<pid_t, timeval> forkStartTimes {};
+#include <fmt/chrono.h>
+
+using namespace std::literals;
+
+std::mutex cout_mutex;
 
 bool operator== (const timeval& lhs, const timeval& rhs) {
     return lhs.tv_sec == rhs.tv_sec && lhs.tv_usec == rhs.tv_usec;
 }
+
+std::atomic<bool> shutdownRequested{false};
 
 void handle_event(es_client_t* client, const es_message_t* msg)
 {
@@ -36,28 +44,11 @@ void handle_event(es_client_t* client, const es_message_t* msg)
             
         case ES_EVENT_TYPE_NOTIFY_FORK:
         {
-            pid_t pid = audit_token_to_pid(msg->event.fork.child->audit_token);
-            timeval esStartTime = msg->event.fork.child->start_time;
-            
-            forkStartTimes.insert({pid, esStartTime});
             break;
         }
             
         case ES_EVENT_TYPE_NOTIFY_EXEC:
         {
-            pid_t pid = audit_token_to_pid(msg->event.exec.target->audit_token);
-            timeval execStartTime = msg->event.exec.target->start_time;
-            
-            try {
-                timeval forkTime = forkStartTimes.at(pid);
-                assert (forkTime == execStartTime);
-                std::cout << "pid " << pid << " exec starttime matches fork\n";
-            } catch (...) {
-                std::cout << "missing fork event for pid " << pid << std::endl;
-            }
-            
-            assert(msg->event.exec.target->start_time == msg->process->start_time);
-            
             break;
         }
             
@@ -74,14 +65,21 @@ void handle_event(es_client_t* client, const es_message_t* msg)
     }
 }
 
-
 int main(int argc, char* argv[])
 {
+    dispatch_queue_t eventQueue = dispatch_queue_create("myEventQueue", DISPATCH_QUEUE_SERIAL);
     
     es_client_t* client;
     es_new_client_result_t result = es_new_client(
                                                   &client, ^(es_client_t* c, const es_message_t* msg) {
-                                                      handle_event(c, msg);
+                                                      es_retain_message(msg);
+                                                      dispatch_async(eventQueue, ^{
+                                                          if (!shutdownRequested) {
+                                                              std::this_thread::sleep_for(50ms);
+                                                              handle_event(c, msg);
+                                                          }
+                                                          es_release_message(msg);
+                                                      });
                                                   }
                                                   );
     
@@ -91,7 +89,7 @@ int main(int argc, char* argv[])
         return 1;
     }
     
-    es_event_type_t events[] = {ES_EVENT_TYPE_NOTIFY_EXEC, ES_EVENT_TYPE_NOTIFY_FORK};
+    es_event_type_t events[] = {ES_EVENT_TYPE_NOTIFY_FORK, ES_EVENT_TYPE_NOTIFY_EXEC, ES_EVENT_TYPE_NOTIFY_EXIT};
     uint32_t count = sizeof(events) / sizeof(es_event_type_t);
     
     if (es_subscribe(client, events, count) != ES_RETURN_SUCCESS)
@@ -101,17 +99,22 @@ int main(int argc, char* argv[])
         return 1;
     }
     
-    int arr[] {1,2,3,4};
+    std::this_thread::sleep_for(2s);
+    if (es_unsubscribe_all(client) != ES_RETURN_SUCCESS) {
+        std::scoped_lock lock{cout_mutex};
+        std::cerr << "Hupsi\n";
+    }
+    else {
+        fmt::println("\nUnsubscribed at {}", std::chrono::system_clock::now());
+    }
+    fmt::println("Going to sleep for 2s");
+    std::this_thread::sleep_for(2s);
     
-    arr[5] = 7;
-    
-    std::unique_ptr<int> ptr {new int(20)};
-    
-    ptr.get()[2] = 5;
-
-    dispatch_main();
-    
-    
+    es_delete_client(client);
+    shutdownRequested = true;
+    // wait till event queue is empty
+    dispatch_sync(eventQueue, ^{});
+    fmt::println("Client deleted");
 }
 
 

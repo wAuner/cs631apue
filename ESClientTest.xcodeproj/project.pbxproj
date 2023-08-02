@@ -7,12 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		112DE0162A781C4300C5D49F /* libfmt.10.0.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 112DE0152A781C4200C5D49F /* libfmt.10.0.0.dylib */; };
+		112DE0172A781C4700C5D49F /* libfmt.10.0.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 112DE0152A781C4200C5D49F /* libfmt.10.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		11859B00266F998A00FFA942 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11859AFF266F998A00FFA942 /* main.cpp */; };
 		11859B03266F99C500FFA942 /* libEndpointSecurity.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 11859B02266F99B900FFA942 /* libEndpointSecurity.tbd */; };
 		11E096AE27EC98A600654C4F /* libbsm.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 11E096AD27EC98A600654C4F /* libbsm.tbd */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		112DE0132A78027C00C5D49F /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				112DE0172A781C4700C5D49F /* libfmt.10.0.0.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		112DE0152A781C4200C5D49F /* libfmt.10.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfmt.10.0.0.dylib; path = lib/libfmt.10.0.0.dylib; sourceTree = "<group>"; };
+		1138A4C22A6FED70006F3AF7 /* ESClientTestDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ESClientTestDebug.entitlements; sourceTree = "<group>"; };
 		1170BC892797E3B800773A26 /* Types.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Types.h; sourceTree = "<group>"; };
 		11859AEF266F94D300FFA942 /* ESClientTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ESClientTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11859AFA266F94D400FFA942 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -28,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11E096AE27EC98A600654C4F /* libbsm.tbd in Frameworks */,
+				112DE0162A781C4300C5D49F /* libfmt.10.0.0.dylib in Frameworks */,
 				11859B03266F99C500FFA942 /* libEndpointSecurity.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -55,6 +74,7 @@
 		11859AF0266F94D300FFA942 /* ESClientTest */ = {
 			isa = PBXGroup;
 			children = (
+				1138A4C22A6FED70006F3AF7 /* ESClientTestDebug.entitlements */,
 				11859AFA266F94D400FFA942 /* Info.plist */,
 				11859AFB266F94D400FFA942 /* ESClientTest.entitlements */,
 				11859AFF266F998A00FFA942 /* main.cpp */,
@@ -68,6 +88,7 @@
 			children = (
 				11E096AD27EC98A600654C4F /* libbsm.tbd */,
 				11859B02266F99B900FFA942 /* libEndpointSecurity.tbd */,
+				112DE0152A781C4200C5D49F /* libfmt.10.0.0.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -82,6 +103,8 @@
 				11859AEB266F94D300FFA942 /* Sources */,
 				11859AEC266F94D300FFA942 /* Frameworks */,
 				11859AED266F94D300FFA942 /* Resources */,
+				112DE0132A78027C00C5D49F /* Embed Libraries */,
+				112DE0182A7844F200C5D49F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -134,6 +157,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		112DE0182A7844F200C5D49F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ninstall_name_tool -change /opt/homebrew/opt/fmt/lib/libfmt.10.dylib @rpath/../Frameworks/libfmt.10.0.0.dylib $BUILT_PRODUCTS_DIR/$EXECUTABLE_PATH\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		11859AEB266F94D300FFA942 /* Sources */ = {
@@ -198,8 +241,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = $SRCROOT/include;
+				LIBRARY_SEARCH_PATHS = $SRCROOT/lib;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -253,8 +296,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = $SRCROOT/include;
+				LIBRARY_SEARCH_PATHS = $SRCROOT/lib;
 				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -267,19 +310,23 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ESClientTest/ESClientTest.entitlements;
+				CODE_SIGN_ENTITLEMENTS = ESClientTest/ESClientTestDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = 64N35HHH3F;
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/include";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/include",
+					/opt/homebrew/include,
+				);
 				INFOPLIST_FILE = ESClientTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.vastlimits.ESClientTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -301,12 +348,16 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/include";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/include",
+					/opt/homebrew/include,
+				);
 				INFOPLIST_FILE = ESClientTest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/lib";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.vastlimits.ESClientTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
